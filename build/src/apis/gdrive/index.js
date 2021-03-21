@@ -4,21 +4,26 @@ const fs = require('fs');
 const { google } = require('googleapis');
 
 function getOAuthClient(credential_path) {
-    credentials = JSON.parse(fs.readFileSync(credential_path));
+    const credentials = JSON.parse(fs.readFileSync(credential_path));
 
-    const { client_secret, client_id, redirect_uris } = credentials.installed;
-    return new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
+    const { client_secret, client_id, redirect_uris } = credentials.web;
+
+    const oAuth2Client = new google.auth.OAuth2(
+        client_id, client_secret, redirect_uris[0]);
+
+    return oAuth2Client;
 }
 
 async function getAuthorization(credential_path, response) {
     const oAuth2Client = getOAuthClient(credential_path);
 
     if (!fs.existsSync(TOKEN_PATH)) {
-        const url = await oAuth2Client.generateAuthUrl({
+        const authUrl = oAuth2Client.generateAuthUrl({
             access_type: 'offline',
             scope: SCOPES,
         });
-        return response.redirect(url);
+
+        return await response.redirect(authUrl);
     }
 
     const token = JSON.parse(fs.readFileSync(TOKEN_PATH));
@@ -27,19 +32,19 @@ async function getAuthorization(credential_path, response) {
     return oAuth2Client;
 }
 
-async function getAccessToken(request, response) {
+async function getAccessToken(credential_path, request, response) {
     try {
-        const oAuth2Client = getOAuthClient(credential_path);
+        const oAuth2Client = getOAuthClient();
         const {tokens} = await oAuth2Client.getToken(request.query.code);
         fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens));
-        return getAuthorization(response);
+        return getAuthorization(credential_path, response);
     } catch (err) {
         return console.error('Error retrieving access token', err);
     }
 }
 
 async function listFiles(credential_path) {
-    const oauthClient = await getAuthorization(credential_path);
+    const oauthClient = await getAuthorization();
     const drive = google.drive({ version: 'v3', auth: oauthClient });
 
     try {

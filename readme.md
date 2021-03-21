@@ -11,7 +11,7 @@ Enquanto Brain conquista todas as APIs, Pinky faz o trabalho de conectar elas pr
 
 * Deve ser legal ter todas essas APIs disponíveis independente da linguagem de programação
 
-CARREGANDO... 
+* CARREGANDO... 
 
 "Ainda não tem nada pronto, é apenas um pequeno teste. Na verdade, o código da API do Google Drive aqui presente é a bela arte de copia ainda, thaks internet."
 

@@ -1,6 +1,6 @@
 {
   "name": "pinkybrain",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Pinky and Brain. If you are a useful API, then you will be here.",
   "main": "build/src/index.js",
   "scripts": {
@@ -9,6 +9,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/euclidesfreire/pinkybrain.git"
+  },
+  "devDependencies": {
+    "googleapis": "^67.1.1",
+    "formidable": "^1.2.2"
   },
   "files": [
     "build/src"
