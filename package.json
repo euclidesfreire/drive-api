@@ -11,8 +11,7 @@
     "url": "git+https://github.com/euclidesfreire/pinkybrain.git"
   },
   "devDependencies": {
-    "googleapis": "^67.1.1",
-    "formidable": "^1.2.2"
+    "googleapis": "^67.1.1"
   },
   "files": [
     "build/src"
