@@ -1,6 +1,5 @@
-import { google } from 'googleapis';
-
 const fs = require('fs');
+const { google } = require('googleapis');
 const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 const TOKEN_PATH = 'token.json';
 
