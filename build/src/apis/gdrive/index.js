@@ -1,7 +1,8 @@
+import { google } from 'googleapis';
+
+const fs = require('fs');
 const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 const TOKEN_PATH = 'token.json';
-const fs = require('fs');
-const { google } = require('googleapis');
 
 function getOAuthClient(credential_path) {
     const credentials = JSON.parse(fs.readFileSync(credential_path));
