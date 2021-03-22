@@ -1,8 +1,8 @@
 {
   "name": "pinkybrain",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Pinky and Brain. If you are a useful API, then you will be here.",
-  "main": "build/src/index.js",
+  "main": "./build/src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
