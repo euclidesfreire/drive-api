@@ -43,8 +43,8 @@ async function getAccessToken(credential_path, request, response) {
     }
 }
 
-async function listFiles(credential_path) {
-    const oauthClient = await getAuthorization();
+async function listFiles(credential_path, response) {
+    const oauthClient = await getAuthorization(credential_path, response);
     const drive = google.drive({ version: 'v3', auth: oauthClient });
 
     try {
@@ -59,8 +59,9 @@ async function listFiles(credential_path) {
     }
 }
 
-async function fileUpload(credential_path, fileName, filePath, mimeType, folderId) {
-    const oauthClient = await getAuthorization(credential_path);
+async function fileUpload(credential_path, response, fileName, filePath, mimeType, folderId) {
+    const oauthClient = await getAuthorization(credential_path, response);
+    
     const fileMetadata = { 
         name: fileName,
         parents: [folderId]
