@@ -34,10 +34,11 @@ async function getAuthorization(credential, response) {
 
 async function getAccessToken(credential, request, response) {
     try {
-        const oAuth2Client = getOAuthClient();
+        const oAuth2Client = getOAuthClient(credential);
         const {tokens} = await oAuth2Client.getToken(request.query.code);
+        oAuth2Client.setCredentials(tokens);
         fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens));
-        return getAuthorization(credential, response);
+        return oAuth2Client;
     } catch (err) {
         return console.error('Error retrieving access token', err);
     }
