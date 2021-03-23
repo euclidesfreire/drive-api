@@ -1,6 +1,6 @@
 {
   "name": "pinkybrain",
-  "version": "0.0.111",
+  "version": "0.0.1",
   "description": "Pinky and Brain. If you are a useful API, then you will be here.",
   "main": "./build/src/index.js",
   "scripts": {
