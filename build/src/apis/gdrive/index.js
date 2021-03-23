@@ -3,8 +3,8 @@ const { google } = require('googleapis');
 const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 const TOKEN_PATH = 'token.json';
 
-function getOAuthClient(credential_path) {
-    const credentials = JSON.parse(fs.readFileSync(credential_path));
+function getOAuthClient(credential) {
+    const credentials = JSON.parse(credential);
 
     const { client_secret, client_id, redirect_uris } = credentials.web;
 
@@ -14,8 +14,8 @@ function getOAuthClient(credential_path) {
     return oAuth2Client;
 }
 
-async function getAuthorization(credential_path, response) {
-    const oAuth2Client = getOAuthClient(credential_path);
+async function getAuthorization(credential, response) {
+    const oAuth2Client = getOAuthClient(credential);
 
     if (!fs.existsSync(TOKEN_PATH)) {
         const authUrl = oAuth2Client.generateAuthUrl({
@@ -32,19 +32,19 @@ async function getAuthorization(credential_path, response) {
     return oAuth2Client;
 }
 
-async function getAccessToken(credential_path, request, response) {
+async function getAccessToken(credential, request, response) {
     try {
         const oAuth2Client = getOAuthClient();
         const {tokens} = await oAuth2Client.getToken(request.query.code);
         fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens));
-        return getAuthorization(credential_path, response);
+        return getAuthorization(credential, response);
     } catch (err) {
         return console.error('Error retrieving access token', err);
     }
 }
 
-async function listFiles(credential_path, response) {
-    const oauthClient = await getAuthorization(credential_path, response);
+async function listFiles(credential, response) {
+    const oauthClient = await getAuthorization(credential, response);
     const drive = google.drive({ version: 'v3', auth: oauthClient });
 
     try {
@@ -59,8 +59,8 @@ async function listFiles(credential_path, response) {
     }
 }
 
-async function fileUpload(credential_path, response, fileName, filePath, mimeType, folderId) {
-    const oauthClient = await getAuthorization(credential_path, response);
+async function fileUpload(credential, response, fileName, filePath, mimeType, folderId) {
+    const oauthClient = await getAuthorization(credential, response);
     
     const fileMetadata = { 
         name: fileName,
