@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { google } = require('googleapis');
-const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+const SCOPES = ['https://www.googleapis.com/auth/drive'];
 const TOKEN_PATH = 'token.json';
 
 function getOAuthClient(credential) {
@@ -44,17 +44,21 @@ async function getAccessToken(credential, request, response) {
     }
 }
 
-async function listFiles(credential, response) {
+async function listFiles(credential, response, query=null) {
     const oauthClient = await getAuthorization(credential, response);
+
     const drive = google.drive({ version: 'v3', auth: oauthClient });
+    
+    const params = {
+        pageSize: 10, 
+        fields: 'nextPageToken, files(id, name)'};
+
+    params.q = query;
 
     try {
-        const res = await drive.files.list({
-            pageSize: 10,
-            fields: 'nextPageToken, files(id, name)',
-        });
+        const res = await drive.files.list(params);
 
-        return res.data.files;
+        return res.data;
     } catch (err) {
         return console.log('The API returned an error: ' + err);
     }
